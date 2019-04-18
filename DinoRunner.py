@@ -5,7 +5,7 @@ import Scripts.Colors as Col
 import Scripts.Dino as Dino
 import Scripts.Cactus as Cactus
 import Scripts.Vector2 as Vc2
-import sys, random
+import sys, random, os
 
 pg.init()   # initialize The pygame module.
 
@@ -29,7 +29,11 @@ startGravity = GRAVITY = 7      # The Gravity factor
 startJumpForce = jumpForce = 150    # The Force used for jumping
 
 
-dinoObject = Dino.Player(dinoWidth,dinoHeight,"Assets/Pictures/Dino.png",clock)     # initializing the player.
+dinoObject = Dino.Player(dinoWidth, dinoHeight,
+                         os.path.join(os.curdir,
+                         os.path.join("Assets",
+                         os.path.join("Pictures", "Dino.png"))),
+                         clock)     # initializing the player.
 dino = dinoObject.player    # reference to the player's image.
 
 
@@ -37,7 +41,11 @@ dino = dinoObject.player    # reference to the player's image.
 playerPos = Vc2.Vector2(dinoWidth, currentHeight - floorHeight - dinoHeight)
 
 # Sources for the trees images
-cactSource = ["Assets/Pictures/Cactus 1.png", "Assets/Pictures/Cactus 2.png"]
+cactSource = [
+    os.path.join(os.curdir, os.path.join("Assets", os.path.join("Pictures", "Cactus 1.png"))), 
+    os.path.join(os.curdir, os.path.join("Assets", os.path.join("Pictures", "Cactus 2.png")))
+]
+
 cactIndex = 0
 
 cact = list()   # a list of all the current cactuses in the game.
@@ -47,7 +55,8 @@ cact.append(Cactus.Cactus(currentWidth, currentHeight - floorHeight - 35, 35, 35
 spawnTimer = 0  # used for interval for the cactus spawning
 startScore = Score = 1  # The Game's Score.
 
-scoreFont = pg.font.Font("Assets/Fonts/BlitzkriegNF.ttf", 30)   # Loading The Font.
+scoreFont = pg.font.Font(os.path.join(os.curdir, os.path.join("Assets", 
+                         os.path.join("Fonts/BlitzkriegNF.ttf"))), 30)   # Loading The Font.
 
 dinoObject.playerPos = playerPos    # Initializing the player's position
 startSpeed = gameSpeed = 5      # The Current Game's Speed.
@@ -153,8 +162,8 @@ while True:
 
         if not GameOver:
             # Increment Score in case GameOver is False.
-            Score += int((gameSpeed / clock.get_time()) / 10)
-            scoreText = scoreFont.render(str(Score), True, Col.Black)
+            Score += (gameSpeed / clock.get_time()) / 10
+            scoreText = scoreFont.render(str(int(Score)), True, Col.Black)
 
             dinoObject.getCollider()
 
